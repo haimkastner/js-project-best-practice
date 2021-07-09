@@ -4,6 +4,7 @@
  * @param b The seconds number
  * @returns The add results
  */
-export function addNumbers(a: number, b: number): number {
+export function addNumbersLegacy(a: number, b: number): number {
+	console.log('This is a legacy logic!!');
 	return a + b;
 }

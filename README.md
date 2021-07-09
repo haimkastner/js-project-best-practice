@@ -5,8 +5,8 @@ An example project with all best-practices boilerplate structure
 Includes 
 * TypeScript
 * Linter (ESLint)
-* prettier 
+* Prettier 
 * Unit Tests (Mocha & Chai)
 * Continuous Integration (GitHub Actions)
 
-The articles about it is available here
+The articles about it is available here?
