@@ -1,0 +1,42 @@
+name: geodesy-js # The name of this flow
+
+on: [push] # The triggers for this flows, set to be any code push 
+
+jobs: # The jobs collection to run
+  tests: # The first job, the test, here we will make sure the new code was not breading the lint rule sand not breaking the tests.
+    runs-on: ubuntu-latest # Run this test on ubuntu based environment
+    strategy: 
+      matrix: # Defined environment to run on, currently we want to run only on node v14
+        node-version: [14.x] 
+    steps: # The steps to run in order to test the new code in this job
+    - uses: actions/checkout@v1  # The first step is to checkout the codebase from the repository (This is a build-in GitHub action, no extra info required)
+    - name: Install node # The second step is to install Node 
+      uses: actions/setup-node@v1 # Use build-in GitHub action for it
+      with: # Use the version matrix to pass GitHub action the required versions
+        node-version: ${{ matrix.node-version }}
+    - name: Lint # The third step is to do the major logic, to validate the new code by the linter and to check the test
+      run: | # The command to run, install the dependencies as they in the `packages.lock` and run the lint command
+        npm ci 
+        npm run lint
+    - name: Test # The forth and the last is step in this job is to run the tests and make sure all of them succeed
+      run: |
+        npm run test
+  build: # The second job is used to build the project then upload the results to the GitHub Actions artifactory.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - uses: actions/checkout@v1 
+    - name: Install node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Build # This step used to build the project
+      run: |
+        npm ci
+        npm run build
+    - uses: actions/upload-artifact@v2 # After the project has been built, upload the results to GitHub Actions the artifactory, (This a build-in GitHub action)
+      with:
+        name: lib # The name for the uploaded artifact
+        path: dist # The path of the built project assets
