@@ -1,4 +1,4 @@
-name: geodesy-js # The name of this flow
+name: JS-CI-EXAMPLE # The name of this flow
 
 on: [push] # The triggers for this flows, set to be any code push 
 
