@@ -3,7 +3,7 @@ name: geodesy-js # The name of this flow
 on: [push] # The triggers for this flows, set to be any code push 
 
 jobs: # The jobs collection to run
-  tests: # The first job, the test, here we will make sure the new code was not breading the lint rule sand not breaking the tests.
+  test: # The first job, the test, here we will make sure the new code was not breading the lint rule sand not breaking the tests.
     runs-on: ubuntu-latest # Run this test on ubuntu based environment
     strategy: 
       matrix: # Defined environment to run on, currently we want to run only on node v14
@@ -22,6 +22,7 @@ jobs: # The jobs collection to run
       run: |
         npm run test
   build: # The second job is used to build the project then upload the results to the GitHub Actions artifactory.
+    needs: test # Mark the build job, as 'test' job needed, so this job will starts only after all test succeeded 
     runs-on: ubuntu-latest
     strategy:
       matrix:
