@@ -18,9 +18,13 @@ jobs: # The jobs collection to run
       run: | # The command to run, install the dependencies as they in the `packages.lock` and run the lint command
         npm ci 
         npm run lint
-    - name: Test # The forth and the last is step in this job is to run the tests and make sure all of them succeed
+    - name: Test # The forth step in this job is to run the tests and to make sure all of them succeed, use the cover script in order to generate the test cover report
       run: |
-        npm run test
+        npm run cover 
+    - name: Publish to Coveralls # In this last step, the coveralls action will send the code coverage report to the Coveralls dashboard
+      uses: coverallsapp/github-action@v1.1.2 # Use the Coveralls ready to use action
+      with:
+        github-token: ${{ github.token }} # The job token in order to let Coveralls access to the job assets
   build: # The second job is used to build the project then upload the results to the GitHub Actions artifactory.
     needs: test # Mark the build job, as 'test' job needed, so this job will starts only after all test succeeded 
     runs-on: ubuntu-latest
